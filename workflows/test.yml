@@ -1,0 +1,49 @@
+name: test-release
+
+on: workflow_dispatch
+
+jobs:
+  upload-assets:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      # Checkout holochain repo
+      - name: Checkout holochain repo
+        run: git clone --depth 1 --branch holochain-0.1.0 https://github.com/holochain/holochain.git
+      # Build hc
+      - name: Build hc
+        env:
+          FIX_SQL_FMT: 1      
+        run: cargo build --release --manifest-path ./holochain/crates/hc/Cargo.toml
+      # list bin folder
+      # list release folder
+      - name: list release folder
+        run: ls
+        working-directory: holochain/target/release
+      # upload binary for each platform
+      - name: upload binary (ubuntu only)
+        if: ${{ runner.os == 'Linux' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp ./holochain/target/release/hc hc_linux
+          gh release upload "manual-release" "hc_linux" --clobber
+      - name: upload binary (macos only)
+        if: ${{ runner.os == 'macOs' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp ./holochain/target/release/hc hc_mac
+          gh release upload "manual-release" "hc_mac" --clobber
+      - name: upload binary (Windows only)
+        if: ${{ runner.os == 'Windows' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "manual-release" "./holochain/target/release/hc.exe" --clobber
