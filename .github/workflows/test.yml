@@ -30,7 +30,6 @@ jobs:
       - name: Compress binary
         if: ${{ runner.os == 'Linux' }}
         uses: a7ul/tar-action@v1.1.0
-        id: compress
         with:
           command: c
           files: |
@@ -39,7 +38,6 @@ jobs:
       - name: Compress binary
         if: ${{ runner.os == 'macOs' }}
         uses: a7ul/tar-action@v1.1.0
-        id: compress
         with:
           command: c
           files: |
@@ -48,7 +46,6 @@ jobs:
       - name: Compress binary
         if: ${{ runner.os == 'Windows' }}
         uses: a7ul/tar-action@v1.1.0
-        id: compress
         with:
           command: c
           files: |
