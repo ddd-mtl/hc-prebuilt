@@ -15,6 +15,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   upload-assets:
+    permissions: write-all
     strategy:
       matrix:
         os:
@@ -23,7 +24,7 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Checkout holochain repo
       - name: Checkout holochain repo
         run: git clone --depth 1 --branch holochain-0.1.0 https://github.com/holochain/holochain.git
@@ -36,6 +37,17 @@ jobs:
       - name: list release folder
         run: ls
         working-directory: holochain/target/release
+      # upload binary for each platform
+      - name: Compress binary
+        if: ${{ runner.os == 'Linux' }}
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          cwd: ./
+          files: |
+            ./holochain/target/release/hc
+          outPath: hc_linux.tar.gz
       # upload binary for each platform
       - name: upload binary (ubuntu only)
         if: ${{ runner.os == 'Linux' }}

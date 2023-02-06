@@ -13,7 +13,7 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Checkout holochain repo
       - name: Checkout holochain repo
         run: git clone --depth 1 --branch holochain-0.1.0 https://github.com/holochain/holochain.git
@@ -22,11 +22,38 @@ jobs:
         env:
           FIX_SQL_FMT: 1      
         run: cargo build --release --manifest-path ./holochain/crates/hc/Cargo.toml
-      # list bin folder
       # list release folder
       - name: list release folder
         run: ls
         working-directory: holochain/target/release
+      # Compress binary for each platform
+      - name: Compress binary
+        if: ${{ runner.os == 'Linux' }}
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc
+          outPath: hc_linux.tar.gz
+      - name: Compress binary
+        if: ${{ runner.os == 'macOs' }}
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc
+          outPath: hc_mac.tar.gz
+      - name: Compress binary
+        if: ${{ runner.os == 'Windows' }}
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc.exe
+          outPath: hc_windows.tar.gz
       # upload binary for each platform
       - name: upload binary (ubuntu only)
         if: ${{ runner.os == 'Linux' }}
@@ -35,6 +62,7 @@ jobs:
         run: |
           cp ./holochain/target/release/hc hc_linux
           gh release upload "manual-release" "hc_linux" --clobber
+          gh release upload "manual-release" "hc_linux.tar.gz" --clobber
       - name: upload binary (macos only)
         if: ${{ runner.os == 'macOs' }}
         env:
@@ -42,9 +70,11 @@ jobs:
         run: |
           cp ./holochain/target/release/hc hc_mac
           gh release upload "manual-release" "hc_mac" --clobber
+          gh release upload "manual-release" "hc_mac.tar.gz" --clobber
       - name: upload binary (Windows only)
         if: ${{ runner.os == 'Windows' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          gh release upload "manual-release" "hc_windows.tar.gz" --clobber          
           gh release upload "manual-release" "./holochain/target/release/hc.exe" --clobber
