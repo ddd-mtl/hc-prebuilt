@@ -9,7 +9,7 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: taiki-e/create-gh-release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,35 +37,47 @@ jobs:
       - name: list release folder
         run: ls
         working-directory: holochain/target/release
-      # upload binary for each platform
+      # Compress binary for each platform
       - name: Compress binary
         if: ${{ runner.os == 'Linux' }}
-        uses: a7ul/tar-action@v1.1.0
-        id: compress
+        uses: a7ul/tar-action@v1.1.2
         with:
           command: c
-          cwd: ./
           files: |
             ./holochain/target/release/hc
           outPath: hc_linux.tar.gz
+      - name: Compress binary
+        if: ${{ runner.os == 'macOs' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc
+          outPath: hc_mac.tar.gz
+      - name: Compress binary
+        if: ${{ runner.os == 'Windows' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc.exe
+          outPath: hc_windows.tar.gz
       # upload binary for each platform
       - name: upload binary (ubuntu only)
         if: ${{ runner.os == 'Linux' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp ./holochain/target/release/hc hc_linux
-          gh release upload "${GITHUB_REF#refs/tags/}" "hc_linux" --clobber
+          gh release upload "${GITHUB_REF#refs/tags/}" "hc_linux.tar.gz" --clobber
       - name: upload binary (macos only)
         if: ${{ runner.os == 'macOs' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp ./holochain/target/release/hc hc_mac
-          gh release upload "${GITHUB_REF#refs/tags/}" "hc_mac" --clobber
+          gh release upload "${GITHUB_REF#refs/tags/}" "hc_mac.tar.gz" --clobber
       - name: upload binary (Windows only)
         if: ${{ runner.os == 'Windows' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${GITHUB_REF#refs/tags/}" "./holochain/target/release/hc.exe" --clobber
+          gh release upload "${GITHUB_REF#refs/tags/}" "hc_windows.tar.gz" --clobber
