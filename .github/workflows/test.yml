@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 jobs:
   upload-assets:
+    permissions: write-all
     strategy:
       matrix:
         os:
