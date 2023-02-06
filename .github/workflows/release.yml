@@ -6,14 +6,6 @@ on:
       - v[0-9]+.*
 
 jobs:
-  create-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: taiki-e/create-gh-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   upload-assets:
     permissions: write-all
     strategy:
@@ -80,4 +72,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${GITHUB_REF#refs/tags/}" "hc_windows.tar.gz" --clobber
+          gh release upload "$($env:GITHUB_REF -replace "refs/tags/")" "hc_windows.tar.gz" --clobber 
