@@ -13,14 +13,13 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
       # Checkout holochain repo
       - name: Checkout holochain repo
         run: git clone --depth 1 --branch holochain-0.1.0 https://github.com/holochain/holochain.git
       # Build hc
       - name: Build hc
         env:
-          FIX_SQL_FMT: 1      
+          FIX_SQL_FMT: 1
         run: cargo build --release --manifest-path ./holochain/crates/hc/Cargo.toml
       # list release folder
       - name: list release folder
