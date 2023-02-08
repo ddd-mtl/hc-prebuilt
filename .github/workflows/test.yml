@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checkout holochain repo
       - name: Checkout holochain repo
-        run: git clone --depth 1 --branch holochain-0.1.0 https://github.com/holochain/holochain.git
+        run: git clone --depth 1 --branch holochain-0.1.2 https://github.com/holochain/holochain.git
       # Build hc
       - name: Build hc
         env:
@@ -33,7 +33,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc
-          outPath: hc_linux.tar.gz
+          outPath: hc_${{  runner.os }}.tar.gz
       - name: Compress binary
         if: ${{ runner.os == 'macOs' }}
         uses: a7ul/tar-action@v1.1.2
@@ -41,7 +41,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc
-          outPath: hc_mac.tar.gz
+          outPath: hc_${{  runner.os }}.tar.gz
       - name: Compress binary
         if: ${{ runner.os == 'Windows' }}
         uses: a7ul/tar-action@v1.1.2
@@ -49,28 +49,20 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc.exe
-          outPath: hc_windows.tar.gz
+          outPath: hc_${{  runner.os }}.tar.gz
       # upload binary for each platform
       - name: upload binary (ubuntu only)
-        if: ${{ runner.os == 'Linux' }}
+        if: ${{ runner.os == 'Linux' || runner.os == 'macOs'}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp ./holochain/target/release/hc hc_linux
-          gh release upload "manual-release" "hc_linux" --clobber
-          gh release upload "manual-release" "hc_linux.tar.gz" --clobber
-      - name: upload binary (macos only)
-        if: ${{ runner.os == 'macOs' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cp ./holochain/target/release/hc hc_mac
-          gh release upload "manual-release" "hc_mac" --clobber
-          gh release upload "manual-release" "hc_mac.tar.gz" --clobber
+          cp ./holochain/target/release/hc hc_${{  runner.os }}
+          gh release upload "manual-release" "hc_${{  runner.os }}" --clobber
+          gh release upload "manual-release" "hc_${{  runner.os }}.tar.gz" --clobber
       - name: upload binary (Windows only)
         if: ${{ runner.os == 'Windows' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "manual-release" "hc_windows.tar.gz" --clobber          
+          gh release upload "manual-release" "hc_${{  runner.os }}.tar.gz" --clobber          
           gh release upload "manual-release" "./holochain/target/release/hc.exe" --clobber
