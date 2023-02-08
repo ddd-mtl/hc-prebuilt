@@ -3,18 +3,10 @@
   "private": true,
   "scripts": {
     "version"          : "./hc --version",
-
     "install:rust"      : "bash install-rust.sh",
-    "install:ci:zits"   : "bash install-zits.sh",
-    "install:hc-cli"    : "bash install-hc-cli.sh",
-    "install:hash-zome" : "bash install-hash-zome.sh",
-
-    "copy-binaries"     : "bash copy-binaries.sh electron/bin",
-
-    "update-version"    : "bash update-version-number.sh $(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')",
-
-    "clean"             : "bash scripts/clean.sh && npm run clean:npm",
-    "clean:npm"         : "bash scripts/clean-npm.sh"
+    "install:hc-cli"    : "bash install-hc-cli.sh 0.1.0 bin",
+    "install:hash-zome" : "bash install-hash-zome.sh bin",
+    "copy-binaries"     : "bash copy-binaries.sh electron/bin"
   },
   "dependencies": {
     "@lightningrodlabs/electron-holochain": "^0.6.1"

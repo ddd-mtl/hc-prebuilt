@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Script for dowloading hash_zome binary to local folder
+
+echo Executing \"$0\".
+echo OSTYPE: $OSTYPE
+
+# Check pre-conditions
+if [ $# != 1 ]; then
+  echo 1>&2 "$0: Aborting. Missing argument: output folder path"
+  exit 2
+fi
+
 platform="pc-windows-msvc"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -18,14 +29,16 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         # Unknown.
 fi
 
-echo
-echo OSTYPE is: $OSTYPE
-echo platform : $platform
 
-mkdir -p artifacts
+echo platform: $platform
+echo output folder set to \"$1\"
+
+mkdir -p $1
 
 value=`curl -s https://api.github.com/repos/ddd-mtl/hash_zome/releases/latest | grep "/hash_zome-x86_64-$platform.tar.gz" | cut -d '"' -f 4`
 echo Donwloading \'$value\'
-wget -q $value -P artifacts
+wget -q $value
 
-tar -xvzf artifacts/hash_zome-x86_64-$platform.tar.gz
+tar -xvzf hash_zome-x86_64-$platform.tar.gz -C $1
+rm hash_zome-x86_64-$platform.tar.gz
+

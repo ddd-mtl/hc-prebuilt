@@ -2,7 +2,8 @@
 
 # Script for copying holochain-runner binary to electron bin folder (used for distributing electron app)
 
-echo "copy-binaries.sh" os-type: $OSTYPE
+echo Executing \"$0\".
+echo OSTYPE: $OSTYPE
 
 # Check pre-conditions
 if [ $# != 1 ]; then
@@ -14,7 +15,7 @@ fi
 binFolder=$1
 moduleFolder="node_modules/@lightningrodlabs/electron-holochain/binaries"
 
-echo binFolder set to $binFolder
+echo binFolder set to \"$binFolder\"
 
 mkdir -p $binFolder
 
@@ -30,4 +31,3 @@ elif [[ $OSTYPE == "msys" ]]; then
   cp $moduleFolder/holochain-runner.exe $binFolder/holochain-runner.exe
 fi
 
-echo "copy-binaries.sh" DONE
