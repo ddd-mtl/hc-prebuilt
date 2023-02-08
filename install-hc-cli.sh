@@ -54,7 +54,6 @@ if [ -d "holochain" ]; then
    exit 1
 fi
 
-mkdir -p $binFolder
 
 value=`curl -s https://api.github.com/repos/ddd-mtl/hc-prebuilt/releases/tags/$version | grep "/$tarfile" | cut -d '"' -f 4`
 
@@ -62,6 +61,8 @@ if [ "$value" == "" ]; then
   echo Version not found. Download aborted.
   exit 0
 fi
+
+mkdir -p $binFolder
 
 echo Downloading \'$value\'
 wget -q $value
