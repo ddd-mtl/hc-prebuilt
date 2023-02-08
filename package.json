@@ -2,9 +2,9 @@
   "name": "hc-prebuilt-dev",
   "private": true,
   "scripts": {
-    "version"          : "./hc --version",
+    "version"          : "./bin/hc --version",
     "install:rust"      : "bash install-rust.sh",
-    "install:hc-cli"    : "bash install-hc-cli.sh 0.1.0 bin",
+    "install:hc-cli"    : "bash install-hc-cli.sh bin 0.1.0",
     "install:hash-zome" : "bash install-hash-zome.sh bin",
     "copy-binaries"     : "bash copy-binaries.sh electron/bin"
   },

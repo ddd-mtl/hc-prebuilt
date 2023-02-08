@@ -11,8 +11,8 @@ if [ $# != 2 ]; then
   exit 2
 fi
 
-
-
+binFolder=$1
+version=$2
 
 platform="Windows"
 fileext=".exe"
@@ -35,12 +35,12 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 echo platform : $platform
-echo Downloading version \"$1\" to folder \"$2\"
+echo Downloading version \"$version\" to folder \"$binFolder\"
 
 tarfile=hc_$platform.tar.gz
 
 hc_file=hc$fileext
-hc_path=$2/$hc_file
+hc_path=$binFolder/$hc_file
 
 echo hc_path: $hc_path
 
@@ -54,9 +54,9 @@ if [ -d "holochain" ]; then
    exit 1
 fi
 
-mkdir -p $2
+mkdir -p $binFolder
 
-value=`curl -s https://api.github.com/repos/ddd-mtl/hc-prebuilt/releases/tags/$1 | grep "/$tarfile" | cut -d '"' -f 4`
+value=`curl -s https://api.github.com/repos/ddd-mtl/hc-prebuilt/releases/tags/$version | grep "/$tarfile" | cut -d '"' -f 4`
 
 if [ "$value" == "" ]; then
   echo Version not found. Download aborted.
@@ -68,5 +68,5 @@ wget -q $value
 
 tar -xvzf $tarfile
 rm $tarfile
-mv holochain/target/release/$hc_file $2
+mv holochain/target/release/$hc_file $binFolder
 rm -rf holochain
