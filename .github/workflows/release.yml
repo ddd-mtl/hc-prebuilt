@@ -24,7 +24,7 @@ jobs:
           echo "runner.os: ${{  runner.os }}"
       # Checkout holochain repo
       - name: Checkout holochain repo
-        run: git clone --depth 1 --branch holochain-$GITHUB_REF_NAME https://github.com/holochain/holochain.git
+        run: git clone --depth 1 --branch holochain-0.1.1 https://github.com/holochain/holochain.git
       # Build hc
       - name: Build hc
         env:
