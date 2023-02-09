@@ -13,6 +13,19 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
+      - name: NPM Setup
+        shell: bash
+        run: |
+          npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+      # Test scripts
+      - name: install:hc-cli
+        shell: bash
+        run: |
+          npm run install:hc-cli
+      - name: version
+        shell: bash
+        run: |
+          npm run version
       - uses: actions/checkout@v3
       # Checkout holochain repo
       - name: Checkout holochain repo
