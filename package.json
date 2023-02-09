@@ -1,11 +1,14 @@
 {
   "name": "hc-prebuilt-dev",
   "private": true,
+  "config": {
+    "bin": "bin"
+  },
   "scripts": {
-    "version"          : "./bin/hc --version",
+    "version"          : "$npm_package_config_bin/hc --version",
     "install:rust"      : "bash install-rust.sh",
-    "install:hc-cli"    : "bash install-hc-cli.sh bin 0.1.0",
-    "install:hash-zome" : "bash install-hash-zome.sh bin",
+    "install:hc-cli"    : "bash install-hc-cli.sh $npm_package_config_bin 0.1.0",
+    "install:hash-zome" : "bash install-hash-zome.sh $npm_package_config_bin",
     "copy-binaries"     : "bash copy-binaries.sh electron/bin"
   },
   "dependencies": {
