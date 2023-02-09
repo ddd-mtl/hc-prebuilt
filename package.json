@@ -5,6 +5,7 @@
     "bin": "bin"
   },
   "scripts": {
+    "print-config"     : "echo config.bin: $npm_package_config_bin && echo config.bin: \\\"$npm_package_config_bin\\\"",
     "version"          : "$npm_package_config_bin/hc --version",
     "install:rust"      : "bash install-rust.sh",
     "install:hc-cli"    : "bash install-hc-cli.sh $npm_package_config_bin 0.1.0",

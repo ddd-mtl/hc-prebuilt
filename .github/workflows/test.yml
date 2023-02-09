@@ -14,21 +14,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: NPM Setup
-        if: ${{ runner.os == 'Windows' }}        
+        if: ${{ runner.os == 'Windows' }}
         shell: bash
         run: |
           npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
-      # Test scripts
-      - name: install:hc-cli
-        continue-on-error: true
+      # Test config
+      - name: GitHub Tag Name test
         shell: bash
         run: |
-          npm run install:hc-cli
-      - name: version
-        shell: bash
-        continue-on-error: true
-        run: |
-          npm run version
+          npm run print-config
       - uses: actions/checkout@v3
       # Checkout holochain repo
       - name: Checkout holochain repo
