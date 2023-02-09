@@ -17,6 +17,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - name: Set NPM shell (windows-only)
+        if: ${{ runner.os == 'Windows' }}
+        shell: bash
+        run: |
+          npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
       - name: GitHub Tag Name test
         run: |
           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
