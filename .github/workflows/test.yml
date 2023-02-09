@@ -26,6 +26,15 @@ jobs:
       - name: list release folder
         run: ls
         working-directory: holochain/target/release
+      # Test scripts
+      - name: install:hc-cli
+        shell: bash
+        run: |
+          npm run install:hc-cli
+      - name: version
+        shell: bash
+        run: |
+          npm run version
       # Compress binary for each platform
       - name: Compress binary (unix)
         if: ${{ runner.os == 'Linux' || runner.os == 'macOs' }}
