@@ -4,6 +4,8 @@
 
 echo Executing \"$0\".
 echo OSTYPE: $OSTYPE
+ARCH=$(uname -m)
+echo arch: $ARCH
 
 # Check pre-conditions
 if [ $# != 1 ]; then
@@ -35,10 +37,10 @@ echo output folder set to \"$1\"
 
 mkdir -p $1
 
-value=`curl -s https://api.github.com/repos/ddd-mtl/hash_zome/releases/latest | grep "/hash_zome-x86_64-$platform.tar.gz" | cut -d '"' -f 4`
+value=`curl -s https://api.github.com/repos/ddd-mtl/hash_zome/releases/latest | grep "/hash_zome-$ARCH-$platform.tar.gz" | cut -d '"' -f 4`
 echo Donwloading \'$value\'
 wget -q $value
 
-tar -xvzf hash_zome-x86_64-$platform.tar.gz -C $1
-rm hash_zome-x86_64-$platform.tar.gz
+tar -xvzf hash_zome-$ARCH-$platform.tar.gz -C $1
+rm hash_zome-$ARCH-$platform.tar.gz
 

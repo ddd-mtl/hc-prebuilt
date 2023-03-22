@@ -48,7 +48,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc
-          outPath: hc_${{  runner.os }}.tar.gz
+          outPath: hc-x86_64-${{  runner.os }}.tar.gz
       - name: Compress binary (windows)
         if: ${{ runner.os == 'Windows' }}
         uses: a7ul/tar-action@v1.1.2
@@ -56,7 +56,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc.exe
-          outPath: hc_${{  runner.os }}.tar.gz
+          outPath: hc-x86_64-${{  runner.os }}.tar.gz
       # list root folder
       - name: list root folder
         run: ls
@@ -66,4 +66,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{  github.ref_name }}" "hc_${{  runner.os }}.tar.gz" --clobber
+          gh release upload "${{  github.ref_name }}" "hc-x86_64-${{  runner.os }}.tar.gz" --clobber

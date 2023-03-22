@@ -4,6 +4,8 @@
 
 echo Executing \"$0\".
 echo OSTYPE: $OSTYPE
+ARCH=$(uname -m)
+echo arch: $ARCH
 
 # Check pre-conditions
 if [ $# != 2 ]; then
@@ -37,7 +39,7 @@ fi
 echo platform : $platform
 echo Downloading version \"$version\" to folder \"$binFolder\"
 
-tarfile=hc_$platform.tar.gz
+tarfile=hc-$ARCH-$platform.tar.gz
 
 hc_file=hc$fileext
 hc_path=$binFolder/$hc_file
