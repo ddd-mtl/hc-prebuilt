@@ -26,6 +26,8 @@ jobs:
 
           #
           run: |
-            git clone https://github.com/holochain/holochain
+            pwd
+            git clone https://github.com/holochain/holochain --depth 1 -v
             cd holochain
+            pwd
             cargo build --release
