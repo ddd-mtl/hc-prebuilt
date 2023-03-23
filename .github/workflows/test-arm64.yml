@@ -1,0 +1,31 @@
+name: Build arm64
+
+on: workflow_dispatch
+
+jobs:
+  build-aarch64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2.5.0
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git
+            apt-get install -q -y cargo
+            apt-get install -q -y wget
+
+          #
+          run: |
+            git clone https://github.com/holochain/holochain
+            cd holochain
+            cargo build --release
