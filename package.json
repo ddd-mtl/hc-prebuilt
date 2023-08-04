@@ -13,6 +13,6 @@
     "copy-binaries"     : "bash copy-binaries.sh electron/bin"
   },
   "dependencies": {
-    "@lightningrodlabs/electron-holochain": "^0.6.1"
+    "@lightningrodlabs/electron-holochain": "=0.7.6"
   }
 }
