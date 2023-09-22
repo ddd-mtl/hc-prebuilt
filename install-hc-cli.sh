@@ -60,7 +60,7 @@ fi
 value=`curl -s https://api.github.com/repos/ddd-mtl/hc-prebuilt/releases/tags/$version | grep "/$tarfile" | cut -d '"' -f 4`
 
 if [ "$value" == "" ]; then
-  echo Version not found. Download aborted.
+  echo Version not found for file \"$tarfile\". Download aborted.
   exit 0
 fi
 
