@@ -36,19 +36,41 @@ jobs:
         env:
           FIX_SQL_FMT: 1
         run: cargo build --release --manifest-path ./holochain/crates/hc/Cargo.toml
+      # Build hc-sandbox
+      - name: Build hc-sandbox
+        env:
+          FIX_SQL_FMT: 1
+        run: cargo build --release --manifest-path ./holochain/crates/hc_sandbox/Cargo.toml
       # list release folder
       - name: list release folder
         run: ls
         working-directory: holochain/target/release
-      # Compress binary for each platform
-      - name: Compress binary (unix)
+      # Compress hc for each platform
+      - name: Compress hc (unix)
         if: ${{ runner.os == 'Linux' || runner.os == 'macOs' }}
         uses: a7ul/tar-action@v1.1.2
         with:
           command: c
           files: |
             ./holochain/target/release/hc
-          outPath: hc-x86_64-${{  runner.os }}.tar.gz
+          outPath: hc-${{  runner.os }}-x86_64.tar.gz
+      - name: Compress hc (windows)
+        if: ${{ runner.os == 'Windows' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc.exe
+          outPath: hc-${{  runner.os }}-x86_64.tar.gz
+      # Compress hc-sandbox for each platform
+      - name: Compress hc-sandbox (unix)
+        if: ${{ runner.os == 'Linux' || runner.os == 'macOs' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc-sandbox
+          outPath: hc_sandbox-${{  runner.os }}-x86_64.tar.gz
       - name: Compress binary (windows)
         if: ${{ runner.os == 'Windows' }}
         uses: a7ul/tar-action@v1.1.2
@@ -56,7 +78,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc.exe
-          outPath: hc-x86_64-${{  runner.os }}.tar.gz
+          outPath: hc_sandbox-${{  runner.os }}x86_64.tar.gz
       # list root folder
       - name: list root folder
         run: ls
@@ -66,4 +88,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{  github.ref_name }}" "hc-x86_64-${{  runner.os }}.tar.gz" --clobber
+          gh release upload "${{  github.ref_name }}" "hc-${{  runner.os }}-x86_64.tar.gz" --clobber
+          gh release upload "${{  github.ref_name }}" "hc_sandbox-${{  runner.os }}-x86_64.tar.gz" --clobber
