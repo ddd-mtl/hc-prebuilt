@@ -10,6 +10,20 @@ on:
 jobs:
 
   call-build:
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      deployments: write
+      discussions: write
+      issues: write
+      packages: write
+      pages: write
+      pull-requests: write
+      repository-projects: write
+      statuses: write
+      security-events: write
+      id-token: write
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
