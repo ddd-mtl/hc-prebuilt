@@ -1,0 +1,17 @@
+name: manual-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      hc_version:
+        description: 'holochain version'
+        required: true
+
+jobs:
+
+  call-build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    with:
+      hc-version: '${{ github.event.inputs.hc_version }}'
+      upload-tag: "manual-release"

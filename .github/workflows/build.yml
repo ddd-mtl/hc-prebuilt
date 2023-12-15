@@ -1,0 +1,90 @@
+name: Build
+
+on:
+  workflow_call:
+
+jobs:
+  upload-assets:
+    permissions: write-all
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set NPM shell (windows-only)
+        if: ${{ runner.os == 'Windows' }}
+        shell: bash
+        run: |
+          npm config set script-shell "C:\\Progr0.2am Files\\git\\bin\\bash.exe"
+      - name: GitHub Tag Name test
+        run: |
+          echo "Tag name from hc-version: ${{ github.hc-version }}"
+          echo "Tag name from hc-version: ${{ hc-version }}"
+          echo "Tag name from upload-tag: ${{ upload-tag }}"
+          echo "               runner.os: ${{ runner.os }}"
+      # Checkout holochain repo
+      - name: Checkout holochain repo
+        run: git clone --depth 1 --branch holochain-${{ hc-version }} https://github.com/holochain/holochain.git
+      # Build hc
+      - name: Build hc
+        env:
+          FIX_SQL_FMT: 1
+        run: cargo build --release --manifest-path ./holochain/crates/hc/Cargo.toml
+      # Build hc-sandbox
+      - name: Build hc-sandbox
+        env:
+          FIX_SQL_FMT: 1
+        run: cargo build --release --manifest-path ./holochain/crates/hc_sandbox/Cargo.toml
+      # list release folder
+      - name: list release folder
+        run: ls
+        working-directory: holochain/target/release
+      # Compress hc for each platform
+      - name: Compress hc (unix)
+        if: ${{ runner.os == 'Linux' || runner.os == 'macOs' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc
+          outPath: hc-${{  runner.os }}-x86_64.tar.gz
+      - name: Compress hc (windows)
+        if: ${{ runner.os == 'Windows' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc.exe
+          outPath: hc-${{  runner.os }}-x86_64.tar.gz
+      # Compress hc-sandbox for each platform
+      - name: Compress hc-sandbox (unix)
+        if: ${{ runner.os == 'Linux' || runner.os == 'macOs' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc-sandbox
+          outPath: hc_sandbox-${{  runner.os }}-x86_64.tar.gz
+      - name: Compress binary (windows)
+        if: ${{ runner.os == 'Windows' }}
+        uses: a7ul/tar-action@v1.1.2
+        with:
+          command: c
+          files: |
+            ./holochain/target/release/hc.exe
+          outPath: hc_sandbox-${{  runner.os }}-x86_64.tar.gz
+      # list root folder
+      - name: list root folder
+        run: ls
+        working-directory: ./
+      # upload binary
+      - name: upload binary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ upload-tag }}" "hc-${{  runner.os }}-x86_64.tar.gz" --clobber
+          gh release upload "${{ upload-tag }}" "hc_sandbox-${{  runner.os }}-x86_64.tar.gz" --clobber
