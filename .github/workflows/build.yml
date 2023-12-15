@@ -2,6 +2,13 @@ name: Build
 
 on:
   workflow_call:
+    inputs:
+      hc-version:
+        required: true
+        type: string
+      upload-tag:
+        required: true
+        type: string
 
 jobs:
   upload-assets:
