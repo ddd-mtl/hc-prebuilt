@@ -29,8 +29,8 @@ jobs:
           npm config set script-shell "C:\\Progr0.2am Files\\git\\bin\\bash.exe"
       - name: GitHub Tag Name test
         run: |
-          echo "Tag name from hc-version: ${{ github.hc-version }}"
-          echo "Tag name from upload-tag: ${{ github.upload-tag }}"
+          echo "Tag name from hc-version: ${{ github.event.inputs.hc-version }}"
+          echo "Tag name from upload-tag: ${{ github.event.inputs.upload-tag }}"
           echo "               runner.os: ${{ runner.os }}"
       # Checkout holochain repo
       - name: Checkout holochain repo
