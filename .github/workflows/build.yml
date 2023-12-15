@@ -27,7 +27,7 @@ jobs:
           echo "               runner.os: ${{ runner.os }}"
       # Checkout holochain repo
       - name: Checkout holochain repo
-        run: git clone --depth 1 --branch holochain-${{ hc-version }} https://github.com/holochain/holochain.git
+        run: git clone --depth 1 --branch holochain-${{ github.hc-version }} https://github.com/holochain/holochain.git
       # Build hc
       - name: Build hc
         env:
@@ -67,7 +67,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc-sandbox
-          outPath: hc_sandbox-${{  runner.os }}-x86_64.tar.gz
+          outPath: hc_sandbox-${{ runner.os }}-x86_64.tar.gz
       - name: Compress binary (windows)
         if: ${{ runner.os == 'Windows' }}
         uses: a7ul/tar-action@v1.1.2
@@ -75,7 +75,7 @@ jobs:
           command: c
           files: |
             ./holochain/target/release/hc.exe
-          outPath: hc_sandbox-${{  runner.os }}-x86_64.tar.gz
+          outPath: hc_sandbox-${{ runner.os }}-x86_64.tar.gz
       # list root folder
       - name: list root folder
         run: ls
@@ -85,5 +85,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{ upload-tag }}" "hc-${{  runner.os }}-x86_64.tar.gz" --clobber
-          gh release upload "${{ upload-tag }}" "hc_sandbox-${{  runner.os }}-x86_64.tar.gz" --clobber
+          gh release upload "${{ github.upload-tag }}" "hc-${{  runner.os }}-x86_64.tar.gz" --clobber
+          gh release upload "${{ github.upload-tag }}" "hc_sandbox-${{  runner.os }}-x86_64.tar.gz" --clobber
