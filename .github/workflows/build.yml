@@ -81,7 +81,7 @@ jobs:
         with:
           command: c
           files: |
-            ./holochain/target/release/hc.exe
+            ./holochain/target/release/hc-sandbox.exe
           outPath: hc_sandbox-${{ runner.os }}-x86_64.tar.gz
       # list root folder
       - name: list root folder
