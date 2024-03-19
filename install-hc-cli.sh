@@ -113,5 +113,5 @@ wget -q $value
 
 tar -xvzf $tarfile
 rm $tarfile
-mv hc-sandbox$fileext $binFolder
+mv holochain/target/release/hc-sandbox$fileext $binFolder
 #rm -rf holochain
