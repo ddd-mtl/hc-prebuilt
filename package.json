@@ -10,7 +10,7 @@
     "install:rust"      : "bash install-rust.sh",
     "install:hc-cli"    : "bash install-hc-cli.sh $npm_package_config_bin 0.1.0",
     "install:hash-zome" : "bash install-hash-zome.sh $npm_package_config_bin",
-    "copy-binaries"     : "bash copy-binaries.sh electron/bin",
+    "copy-binaries"     : "bash copy-holochain-runner.sh electron/bin",
     "dl-manual-release" : "rm -rf release & mkdir -p release & gh release download manual-release -D release -R ddd-mtl/hc-prebuilt"
   },
   "dependencies": {

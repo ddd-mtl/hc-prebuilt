@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script for dowloading hash_zome binary to local folder
+# Script for downloading hash_zome binary to local folder
 
 echo Executing \"$0\".
 echo OSTYPE: $OSTYPE
