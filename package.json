@@ -2,6 +2,7 @@
   "name": "hc-prebuilt-dev",
   "private": true,
   "config": {
+    "k2_version": "0.2.17",
     "hc_version": "0.5.6",
     "bin": "bin"
   },
@@ -10,12 +11,15 @@
 
     "install:rust"          : "bash install-rust.sh",
 
-    "download:hc"           : "bash download-hc.sh $npm_package_config_bin $npm_package_config_hc_version",
+    "download:hc"           : "bash download-hc.sh hc $npm_package_config_bin $npm_package_config_hc_version",
+    "download:holochain"    : "bash download-hc.sh holochain $npm_package_config_bin $npm_package_config_hc_version",
+    "download:kitsune"      : "bash download-hc.sh kitsune2-bootstrap-srv $npm_package_config_bin $npm_package_config_k2_version",
+
     "download:hash-zome"    : "bash download-hash-zome.sh $npm_package_config_bin",
 
     "copy-holochain-runner" : "bash copy-holochain-runner.sh electron/bin",
 
-    "check"                 : "$npm_package_config_bin/hc --version",
+    "check"                 : "$npm_package_config_bin/hc --version & $npm_package_config_bin/holochain --version",
 
 
     "dl-manual-release"     : "rm -rf release & mkdir -p release & gh release download manual-release -D release -R ddd-mtl/hc-prebuilt"
