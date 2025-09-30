@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script for copying holochain-runner binary to electron bin folder (used for distributing electron app)
+# Script for copying local holochain-runner binary to electron bin folder (used for distributing electron app)
 
 echo Executing \"$0\".
 echo OSTYPE: $OSTYPE
