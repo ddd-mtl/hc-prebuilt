@@ -1,11 +1,21 @@
 {
-  "name": "hc-prebuilt-dev",
-  "private": true,
+  "name": "@ddd-qc/hc-prebuilt",
+  "version": "0.506.0",
+  "description": "Scripts for downloading Holochain binaries",
   "config": {
     "k2_version": "0.2.17",
     "hc_version": "0.5.6",
     "bin": "bin"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddd-mtl/hc-prebuilt.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/ddd-mtl/hc-prebuilt/issues"
+  },
+  "homepage": "https://github.com/ddd-mtl/hc-prebuilt#readme",
   "scripts": {
     "print-config"          : "echo config.bin: $npm_package_config_bin && echo config.hc_version: \\\"$npm_package_config_hc_version\\\"",
 
@@ -21,10 +31,6 @@
 
     "check"                 : "$npm_package_config_bin/hc --version & $npm_package_config_bin/holochain --version",
 
-
     "dl-manual-release"     : "rm -rf release & mkdir -p release & gh release download manual-release -D release -R ddd-mtl/hc-prebuilt"
-  },
-  "dependencies": {
-    "@lightningrodlabs/electron-holochain": "=0.7.6"
   }
 }
