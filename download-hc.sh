@@ -15,7 +15,7 @@ fi
 
 # 1. Abort if the file exists
 if [ -f "$2/$1" ]; then
-    echo "Error: hc binary file already exists. Aborting script." >&2
+    echo "Error: Binary file '$1' already exists in '$2'. Aborting script." >&2
     exit 1
 fi
 

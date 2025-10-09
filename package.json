@@ -1,6 +1,6 @@
 {
   "name": "@ddd-qc/hc-prebuilt",
-  "version": "0.506.0",
+  "version": "0.506.1",
   "description": "Scripts for downloading Holochain binaries",
   "config": {
     "k2_version": "0.2.17",
