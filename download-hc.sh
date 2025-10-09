@@ -44,7 +44,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 echo platform : $platform
-echo Downloading version \"$version\" to folder \"$binFolder\"
+echo Downloading \"$binName\" version \"$version\" to folder \"$binFolder\"
 
 ### DOWNLOADING hc
 
@@ -66,7 +66,7 @@ fi
 ASSET_URL=`curl -s https://api.github.com/repos/matthme/holochain-binaries/releases/tags/$binName-binaries-$version | grep "$hc_file_ext" -A 10 | grep "browser_download_url" | sed -E 's/.*"browser_download_url": "([^"]*)".*/\1/'`
 
 if [ "$ASSET_URL" == "" ]; then
-  echo Version not found for file \"$tarfile\". Download aborted.
+  echo Version not found for file \"$binName\". Download aborted.
   exit 0
 fi
 
