@@ -37,6 +37,8 @@ echo output folder set to \"$1\"
 
 mkdir -p $1
 
+## hash_zome
+
 value=`curl -s https://api.github.com/repos/ddd-mtl/hash_zome/releases/latest | grep "/hash_zome-$ARCH-$platform.tar.gz" | cut -d '"' -f 4`
 echo Donwloading \'$value\'
 wget -q $value
@@ -44,3 +46,12 @@ wget -q $value
 tar -xvzf hash_zome-$ARCH-$platform.tar.gz -C $1
 rm hash_zome-$ARCH-$platform.tar.gz
 
+
+## unpack_webhapp
+
+value=`curl -s https://api.github.com/repos/ddd-mtl/hash_zome/releases/latest | grep "/unpack_webhapp-$ARCH-$platform.tar.gz" | cut -d '"' -f 4`
+echo Donwloading \'$value\'
+wget -q $value
+
+tar -xvzf unpack_webhapp-$ARCH-$platform.tar.gz -C $1
+rm unpack_webhapp-$ARCH-$platform.tar.gz
