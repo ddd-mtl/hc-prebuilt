@@ -48,11 +48,12 @@ echo Downloading \"$binName\" version \"$version\" to folder \"$binFolder\"
 
 ### DOWNLOADING hc
 
-hc_file=$binName-v$version-$ARCH-$platform
+hc_file=$binName-$ARCH-$platform
 hc_file_ext=$hc_file$fileext
 hc_path=$binFolder/$hc_file
 
 echo hc_path: $hc_path
+echo hc_file_ext: $hc_file_ext
 
 if test -f "$hc_path"; then
   echo \"$hc_path\" found. Download aborted.
@@ -63,7 +64,7 @@ fi
 #tarfile=$exename-$platform-$ARCH.tar.gz
 #value=`curl -s https://api.github.com/repos/ddd-mtl/hc-prebuilt/releases/tags/$version | grep "/$tarfile" | cut -d '"' -f 4`
 
-ASSET_URL=`curl -s https://api.github.com/repos/matthme/holochain-binaries/releases/tags/$binName-binaries-$version | grep "$hc_file_ext" -A 10 | grep "browser_download_url" | sed -E 's/.*"browser_download_url": "([^"]*)".*/\1/'`
+ASSET_URL=`curl -s https://api.github.com/repos/holochain/holochain/releases/tags/holochain-$version | grep "$hc_file_ext" -A 10 | grep "browser_download_url" | sed -E 's/.*"browser_download_url": "([^"]*)".*/\1/'`
 
 if [ "$ASSET_URL" == "" ]; then
   echo Version not found for file \"$binName\". Download aborted.
